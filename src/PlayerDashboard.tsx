@@ -50,7 +50,7 @@ const PlayerDashboard: React.FC = () => {
                     ) : (
                         <div>
                             <h2>Welcome, {name}!</h2>
-                            <h3>Current Players: {players.join(', ')}</h3>
+                            <h3>Current Players: {"Players: " + players.join(', ') + "\n Narrator: " + narrator}</h3>
                             <h3>Roles in this game: {roles.join(', ')}</h3>
                         </div>
                     )}
