@@ -11,7 +11,7 @@ const PlayerDashboardInGame: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [playerInfo, setPlayerInfo] = useState<Player>();
   const [alivePlayers, setAlivePlayers] = useState<Player[]>([]);
-  const [aliveRoles, setAliveRoles] = useState<{ role: Role; number: Number }[]>([]);
+  const [aliveRoles, setAliveRoles] = useState<{ roleName: RoleName | undefined; number: Number }[]>([]);
   const allRoleNames = Object.values(RoleName);
   const playerId: string = useLocation().state.playerId;
   console.log(playerId);
@@ -34,17 +34,9 @@ const PlayerDashboardInGame: React.FC = () => {
       setAlivePlayers(updatedPlayers.filter((player) => player.isAlive));
 
       // Update alive roles
-      const aliveRolesArray = Object.entries(
-        updatedPlayers
-          .filter((player) => player.isAlive && player.role !== null)
-          .reduce((counts: { [key: string]: number }, player) => {
-            const roleName: RoleName = player.role?.roleAttributes.roleName!;
-            counts[roleName] = (counts[roleName] || 0) + 1;
-            return counts;
-          }, {})
-      ).map(([roleName, number]) => ({
-        role: roles.find((role) => role.roleAttributes.roleName === roleName)!,
-        number,
+      const aliveRolesArray = allRoleNames.map((roleName) => ({
+        roleName,
+        number: updatedPlayers.filter((player) => player.isAlive && player.role?.roleAttributes.roleName === roleName).length,
       }));
       setAliveRoles(aliveRolesArray);
     });
@@ -60,6 +52,12 @@ const PlayerDashboardInGame: React.FC = () => {
       socket.off("update-players");
     };
   }, []);
+
+  const loadAllInfo = () => {
+    // Ask for the server to update all info
+    socket.emit("update-all");
+  };
+  loadAllInfo();
 
   return (
     <div>
@@ -88,9 +86,9 @@ const PlayerDashboardInGame: React.FC = () => {
       <h3>Roles: </h3>
       Remaining characters: <br />
       {aliveRoles.map((role) => (
-        <div key={role.role.roleAttributes.roleName}>
+        <div key={role?.roleName}>
           <h3>
-            {role.role.roleAttributes.roleName}: {role.number.toString()}
+            {role?.roleName} : {role?.number.toString()}
           </h3>
         </div>
       ))}
