@@ -3,12 +3,11 @@
     height: 20px;
     background-color: green;
     border-radius: 50%;
-  }
-  
-  .dead-indicator {
+}
+
+.dead-indicator {
     width: 20px;
     height: 20px;
     background-color: red;
     border-radius: 50%;
-  }
-  
+}
