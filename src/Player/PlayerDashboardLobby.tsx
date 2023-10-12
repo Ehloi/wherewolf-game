@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import "./PlayerDashboard.css";
 import { Player, PlayerType } from "../types/Player";
 import { Role, RoleName } from "../types/Role";
 import { useNavigate } from "react-router-dom";
+import "./PlayerDashboardLobby.css"; // Import the CSS file
 const socket = io("http://localhost:3001");
 
 const PlayerDashboardLobby: React.FC = () => {
@@ -29,9 +29,18 @@ const PlayerDashboardLobby: React.FC = () => {
     socket.on("update-roles", (newRoles: Role[]) => {
       setRoles(newRoles);
     });
+    socket.on("start-game", () => {
+      navigate("/player-dashboard-in-game", {
+        state: { playerId: playerId },
+      });
+    });
+    socket.on("reset-game", () => {
+      navigate("/");
+    });
 
     // Cleanup to avoid multiple listeners
     return () => {
+      socket.off("reset-game");
       socket.off("update-roles");
       socket.off("update-players");
     };
@@ -62,39 +71,35 @@ const PlayerDashboardLobby: React.FC = () => {
     setHasEnteredName(true);
   };
   return (
-    <div>
-      <h1>Waiting for the game to start...</h1>
+    <div className="lobby-dashboard">
+      <h1 className="lobby-title">Waiting for the game to start...</h1>
       {!hasEnteredName ? (
-        <div>
-          <input type="text" onChange={(e) => setName(e.target.value)} />
-          <button onClick={submitName}>Submit</button>
+        <div className="name-input-section">
+          <input className="name-input" type="text" onChange={(e) => setName(e.target.value)} />
+          <button className="submit-button" onClick={submitName}>
+            Submit
+          </button>
         </div>
       ) : (
-        <div>
-          <h2>Welcome, {name}!</h2>
-          <h3>
+        <div className="player-info-section">
+          <h2 className="welcome-message">Welcome, {name}!</h2>
+          <h3 className="current-players">
             Current Players:{" "}
             {players
               .filter((player) => player.playerType === "Player")
               .map((player) => player.name)
               .join(", ")}
           </h3>
-          <h3>
-            {"Narrator: " +
-              `${
-                players.find((player) => player.playerType === "Narrator")
-                  ? players.find((player) => player.playerType === "Narrator")?.name
-                  : "No narrator yet"
-              }` +
-              "\n"}
+          <h3 className="narrator-info">
+            {"Narrator: " + `${players.find((player) => player.playerType === "Narrator") ? players.find((player) => player.playerType === "Narrator")?.name : "No narrator yet"}` + "\n"}
           </h3>
-          <h3>
-            {allRoleNames.map((roleName) => (
-              <h3>
-                {roleName}: {roles.filter((role) => role.roleAttributes.roleName === roleName).length}
+          <div className="role-info">
+            {allRoleNames.map((name) => (
+              <h3 className="role-count">
+                {name}: {roles.filter((role: Role) => role && role.attributes && role.attributes.name === name).length}
               </h3>
             ))}
-          </h3>
+          </div>
         </div>
       )}
     </div>

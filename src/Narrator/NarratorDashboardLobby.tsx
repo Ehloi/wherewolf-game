@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import { Role, RoleAttributes } from "../types/Role";
 import { Player, PlayerType } from "../types/Player";
 import { useNavigate } from "react-router-dom";
+import "./NarratorDashboardLobby.css";
 const socket = io("http://localhost:3001");
 
 const NarratorDashboardLobby: React.FC = () => {
@@ -16,8 +17,12 @@ const NarratorDashboardLobby: React.FC = () => {
     socket.on("update-roles", (newRoles: Role[]) => {
       setRoles(newRoles);
     });
+    socket.on("reset-game", () => {
+      navigate("/");
+    });
     return () => {
       socket.off("update-roles");
+      socket.off("reset-game");
     };
   }, []);
 
@@ -32,31 +37,23 @@ const NarratorDashboardLobby: React.FC = () => {
     socket.emit("set-player", newPlayer);
   };
 
-  const addRole = (roleAttributes: RoleAttributes) => {
-    socket.emit("add-role", roleAttributes);
+  const addRole = (attributes: RoleAttributes) => {
+    socket.emit("add-role", attributes);
   };
 
-  const removeRole = (roleAttributes: RoleAttributes) => {
-    socket.emit("remove-role", roleAttributes);
+  const removeRole = (attributes: RoleAttributes) => {
+    socket.emit("remove-role", attributes);
   };
 
   return (
-    <div>
+    <div className="narrator-dashboard">
       {isNameSubmitted ? (
         <div>
-          <h1>Narrator Dashboard</h1>
-          {allRoleAttributes.map((role) => (
-            <div key={role.roleName}>
-              <h3>
-                {role.roleName}: {roles.filter((r) => r.roleAttributes.roleName === role.roleName).length}
-              </h3>
-              <button onClick={() => addRole(role)}>Add {role.roleName}</button>
-              <button onClick={() => removeRole(role)}>Remove {role.roleName}</button>
-            </div>
-          ))}
+          <h1 className="narrator-dashboard h1">Narrator Dashboard</h1>
           {
             <div>
               <button
+                className="narrator-dashboard button"
                 onClick={() => {
                   socket.emit("start-game");
                   // redirects to NarratorDashboardInGame
@@ -64,13 +61,32 @@ const NarratorDashboardLobby: React.FC = () => {
                 }}>
                 Start Game
               </button>
+              <button className="narrator-dashboard button" onClick={() => socket.emit("reset-game")}>
+                Reset Game
+              </button>
             </div>
           }
+          <p>You are registered as {narratorName}</p>
+          {allRoleAttributes.map((role) => (
+            <div key={role.name}>
+              <h3 className="narrator-dashboard h3">
+                {role.name}: {roles.filter((r) => r && r.attributes && r.attributes.name === role.name).length}
+              </h3>
+              <button className="narrator-dashboard button" onClick={() => addRole(role)}>
+                +
+              </button>
+              <button className="narrator-dashboard button" onClick={() => removeRole(role)}>
+                -
+              </button>
+            </div>
+          ))}
         </div>
       ) : (
         <div>
-          <input type="text" placeholder="Enter your name" onChange={(e) => setNarratorName(e.target.value)} />
-          <button onClick={submitName}>Submit</button>
+          <input className="narrator-dashboard input" type="text" placeholder="Enter your name" onChange={(e) => setNarratorName(e.target.value)} />
+          <button className="narrator-dashboard button" onClick={submitName}>
+            Submit
+          </button>
         </div>
       )}
     </div>

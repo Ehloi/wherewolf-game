@@ -1,0 +1,52 @@
+.player-dashboard-in-game {
+  padding: 20px;
+}
+
+.dashboard-title {
+  font-size: 2em;
+}
+
+.game-start-message,
+.role-info,
+.role-description,
+.status {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.status-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.alive-indicator {
+  background-color: green;
+}
+
+.dead-indicator {
+  background-color: red;
+}
+
+.players-title,
+.roles-title {
+  font-size: 1.5em;
+  margin-top: 20px;
+}
+
+.player-list,
+.role-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.player-card,
+.role-card {
+  width: 30%;
+  margin: 10px;
+}
+
+.player-info,
+.role-info {
+  font-size: 1em;
+}

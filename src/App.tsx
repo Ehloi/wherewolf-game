@@ -3,7 +3,7 @@ import GameLobby from "./GameLobby";
 import PlayerDashboardLobby from "./Player/PlayerDashboardLobby";
 import PlayerDashboardInGame from "./Player/PlayerDashboardInGame";
 import NarratorDashboardLobby from "./Narrator/NarratorDashboardLobby";
-import NarratorDashboardInGame from "./Narrator/NarratorDashBoardInGame";
+import NarratorDashboardInGame from "./Narrator/NarratorDashboardInGame";
 function App() {
   return (
     <Router>

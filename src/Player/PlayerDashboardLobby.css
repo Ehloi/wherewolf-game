@@ -1,0 +1,45 @@
+.lobby-dashboard {
+  padding: 20px;
+}
+
+.lobby-title {
+  font-size: 2em;
+}
+
+.name-input-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-input {
+  margin-bottom: 10px;
+}
+
+.submit-button {
+  cursor: pointer;
+}
+
+.player-info-section {
+  margin-top: 20px;
+}
+
+.welcome-message {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.current-players,
+.narrator-info {
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+.role-info {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.role-count {
+  width: 30%;
+  margin: 10px;
+}

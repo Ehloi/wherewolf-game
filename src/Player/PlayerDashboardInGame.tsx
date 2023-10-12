@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import "./PlayerDashboard.css";
 import { Player, PlayerType } from "../types/Player";
 import { Role, RoleName } from "../types/Role";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./PlayerDashboardInGame.css"; // Import the CSS file
 const socket = io("http://localhost:3001");
 
 const PlayerDashboardInGame: React.FC = () => {
@@ -11,11 +11,10 @@ const PlayerDashboardInGame: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [playerInfo, setPlayerInfo] = useState<Player>();
   const [alivePlayers, setAlivePlayers] = useState<Player[]>([]);
-  const [aliveRoles, setAliveRoles] = useState<{ roleName: RoleName | undefined; number: Number }[]>([]);
+  const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: Number }[]>([]);
   const allRoleNames = Object.values(RoleName);
   const playerId: string = useLocation().state.playerId;
-  console.log(playerId);
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Updates players, alive roles, alive players and player info
     socket.on("update-players", (updatedPlayers: Player[]) => {
@@ -34,13 +33,16 @@ const PlayerDashboardInGame: React.FC = () => {
       setAlivePlayers(updatedPlayers.filter((player) => player.isAlive));
 
       // Update alive roles
-      const aliveRolesArray = allRoleNames.map((roleName) => ({
-        roleName,
-        number: updatedPlayers.filter((player) => player.isAlive && player.role?.roleAttributes.roleName === roleName).length,
+      const aliveRolesArray = allRoleNames.map((name) => ({
+        name,
+        number: updatedPlayers.filter((player) => player.isAlive && player.role?.attributes.name === name).length,
       }));
       setAliveRoles(aliveRolesArray);
     });
 
+    socket.on("reset-game", () => {
+      navigate("/");
+    });
     // Update roles
     socket.on("update-roles", (newRoles: Role[]) => {
       setRoles(newRoles);
@@ -48,6 +50,7 @@ const PlayerDashboardInGame: React.FC = () => {
 
     // Cleanup to avoid multiple listeners
     return () => {
+      socket.off("reset-game");
       socket.off("update-roles");
       socket.off("update-players");
     };
@@ -60,38 +63,46 @@ const PlayerDashboardInGame: React.FC = () => {
   loadAllInfo();
 
   return (
-    <div>
-      <h1>Player Dashboard</h1>
-      <p>
+    <div className="player-dashboard-in-game">
+      <h1 className="dashboard-title">Player Dashboard</h1>
+      <p className="game-start-message">
         <strong>The game has started, {playerInfo?.name}</strong>
       </p>
-      <p>
-        <strong>Your role is: </strong> {playerInfo?.role?.roleAttributes.roleName}
+      <p className="role-info">
+        <strong>Your role is: </strong> {playerInfo?.role?.attributes.name}
       </p>
-      <p>
-        <strong>Your role desciption: {playerInfo?.role?.roleAttributes.roleDescription}</strong>
+      <p className="role-description">
+        <strong>Your role description: {playerInfo?.role?.attributes.description}</strong>
       </p>
-      <strong>Status: </strong> {playerInfo?.isAlive ? "Alive" : "☠️"}
+      <p className="status">
+        <strong>Status: </strong> {playerInfo?.isAlive ? "Alive" : "☠️"}
+      </p>
       <div className={`status-indicator ${playerInfo?.isAlive ? "alive-indicator" : "dead-indicator"}`}></div>
-      <h3>Players: </h3>
-      {players
-        .filter((p: Player) => p.playerType === PlayerType.PLAYER)
-        .map((p: Player) => (
-          <div key={p.name}>
-            <h3>
-              Name: {p.name} - Status: {p.isAlive ? "Alive" : "Dead"}
+
+      <h3 className="players-title">Players:</h3>
+      <div className="player-list">
+        {players
+          .filter((p: Player) => p.playerType === PlayerType.PLAYER)
+          .map((p: Player) => (
+            <div className="player-card" key={p.name}>
+              <h3 className="player-info">
+                Name: {p.name} - Status: {p.isAlive ? "Alive" : "Dead"}
+              </h3>
+            </div>
+          ))}
+      </div>
+
+      <h3 className="roles-title">Roles:</h3>
+      <div className="role-list">
+        Remaining characters: <br />
+        {aliveRoles.map((role) => (
+          <div className="role-card" key={role?.name}>
+            <h3 className="role-info">
+              {role?.name} : {role?.number.toString()}
             </h3>
           </div>
         ))}
-      <h3>Roles: </h3>
-      Remaining characters: <br />
-      {aliveRoles.map((role) => (
-        <div key={role?.roleName}>
-          <h3>
-            {role?.roleName} : {role?.number.toString()}
-          </h3>
-        </div>
-      ))}
+      </div>
     </div>
   );
 };
