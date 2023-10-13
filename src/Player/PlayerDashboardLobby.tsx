@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { Player, PlayerType } from "../types/Player";
-import { Role, RoleName } from "../types/Role";
+import { Role, RoleName, RoleIcon, RoleDescription } from "../types/Role";
 import { useNavigate } from "react-router-dom";
 import "./PlayerDashboardLobby.css"; // Import the CSS file
+import "../Styles/roleStyles.css"; // Import the CSS file
 const socket = io("http://localhost:3001");
-
 const PlayerDashboardLobby: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -14,8 +14,8 @@ const PlayerDashboardLobby: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [playerInfo, setPlayerInfo] = useState<Player>();
   const allRoleNames = Object.values(RoleName);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const playerId: string = socket.id;
-
   useEffect(() => {
     socket.on("update-players", (updatedPlayers: Player[]) => {
       setPlayers(updatedPlayers);
@@ -56,6 +56,13 @@ const PlayerDashboardLobby: React.FC = () => {
       socket.off("start-game");
     };
   }, []);
+  const toggleRoleDescription = (roleName: string) => {
+    if (selectedRole === roleName) {
+      setSelectedRole(null);
+    } else {
+      setSelectedRole(roleName);
+    }
+  };
 
   const submitName = () => {
     const newPlayer: Player = {
@@ -94,11 +101,25 @@ const PlayerDashboardLobby: React.FC = () => {
             {"Narrator: " + `${players.find((player) => player.playerType === "Narrator") ? players.find((player) => player.playerType === "Narrator")?.name : "No narrator yet"}` + "\n"}
           </h3>
           <div className="role-info">
-            {allRoleNames.map((name) => (
-              <h3 className="role-count">
-                {name}: {roles.filter((role: Role) => role && role.attributes && role.attributes.name === name).length}
-              </h3>
-            ))}
+            {allRoleNames.map((name) => {
+              const numberOfRoles = roles.filter((role: Role) => role && role.attributes && role.attributes.name === name).length;
+              const isSelected = selectedRole === name;
+
+              return (
+                <div className={`role-card ${isSelected ? "expanded" : ""}`} onClick={() => toggleRoleDescription(name)}>
+                  <img src={RoleIcon[name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${name} icon`} className="role-icon" />
+                  <h3 className="role-count">
+                    {name}: {numberOfRoles}
+                  </h3>
+                  {isSelected && (
+                    <p
+                      className="role-description"
+                      dangerouslySetInnerHTML={{ __html: RoleDescription[name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleDescription].trim().replaceAll("\n", "<br>") }}
+                    />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

@@ -7,8 +7,6 @@
 }
 
 .game-start-message,
-.role-info,
-.role-description,
 .status {
   font-size: 1em;
   margin-bottom: 10px;
@@ -28,25 +26,21 @@
   background-color: red;
 }
 
-.players-title,
-.roles-title {
+.players-title {
   font-size: 1.5em;
   margin-top: 20px;
 }
 
-.player-list,
-.role-list {
+.player-list {
   display: flex;
   flex-wrap: wrap;
 }
 
-.player-card,
-.role-card {
+.player-card {
   width: 30%;
   margin: 10px;
 }
 
-.player-info,
-.role-info {
+.player-info {
   font-size: 1em;
 }

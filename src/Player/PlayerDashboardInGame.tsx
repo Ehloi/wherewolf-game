@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { Player, PlayerType } from "../types/Player";
-import { Role, RoleName } from "../types/Role";
+import { Role, RoleName, RoleDescription, RoleIcon } from "../types/Role";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./PlayerDashboardInGame.css"; // Import the CSS file
+import "../Styles/roleStyles.css";
+
 const socket = io("http://localhost:3001");
 
 const PlayerDashboardInGame: React.FC = () => {
@@ -11,11 +13,12 @@ const PlayerDashboardInGame: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [playerInfo, setPlayerInfo] = useState<Player>();
   const [alivePlayers, setAlivePlayers] = useState<Player[]>([]);
-  const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: Number }[]>([]);
+  const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: number }[]>([]);
   const allRoleNames = Object.values(RoleName);
   const playerId: string = useLocation().state.playerId;
   const navigate = useNavigate();
   useEffect(() => {
+    loadAllInfo();
     // Updates players, alive roles, alive players and player info
     socket.on("update-players", (updatedPlayers: Player[]) => {
       // Update players
@@ -37,6 +40,7 @@ const PlayerDashboardInGame: React.FC = () => {
         name,
         number: updatedPlayers.filter((player) => player.isAlive && player.role?.attributes.name === name).length,
       }));
+      aliveRoles.filter((role) => role.number > 0);
       setAliveRoles(aliveRolesArray);
     });
 
@@ -60,7 +64,6 @@ const PlayerDashboardInGame: React.FC = () => {
     // Ask for the server to update all info
     socket.emit("update-all");
   };
-  loadAllInfo();
 
   return (
     <div className="player-dashboard-in-game">
@@ -95,13 +98,20 @@ const PlayerDashboardInGame: React.FC = () => {
       <h3 className="roles-title">Roles:</h3>
       <div className="role-list">
         Remaining characters: <br />
-        {aliveRoles.map((role) => (
-          <div className="role-card" key={role?.name}>
-            <h3 className="role-info">
-              {role?.name} : {role?.number.toString()}
-            </h3>
-          </div>
-        ))}
+        {aliveRoles
+          .filter((role) => role.number > 0)
+          .map((role) => (
+            <div className="role-card" key={role?.name}>
+              <img src={RoleIcon[role?.name?.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${role?.name} icon`} className="role-icon" />
+              <h3 className="role-info">
+                {role?.name} : {role?.number.toString()}
+              </h3>
+              <p
+                className="role-description"
+                dangerouslySetInnerHTML={{ __html: RoleDescription[role?.name?.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleDescription]?.trim().replaceAll("\n", "<br>") }}
+              />
+            </div>
+          ))}
       </div>
     </div>
   );

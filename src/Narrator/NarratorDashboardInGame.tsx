@@ -12,7 +12,7 @@ const NarratorDashboardInGame: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
   const [alivePlayers, setAlivePlayers] = useState<Player[]>([]);
-  const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: Number }[]>([]);
+  const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: number }[]>([]);
   const [script, setScript] = useState<string[]>([]);
 
   const allRoleNames = Object.values(RoleName);

@@ -33,13 +33,3 @@
   font-size: 1em;
   margin-bottom: 10px;
 }
-
-.role-info {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.role-count {
-  width: 30%;
-  margin: 10px;
-}
