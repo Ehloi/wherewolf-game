@@ -79,16 +79,21 @@ const PlayerDashboardLobby: React.FC = () => {
   };
   return (
     <div className="lobby-dashboard">
-      <h1 className="lobby-title">Waiting for the game to start...</h1>
+      <img src="https://i.ibb.co/SXh3Hpm/Wherere-Wolfs-Logo-removebg-preview-modified.png" alt="Game Logo" className="game-logo" />
       {!hasEnteredName ? (
-        <div className="name-input-section">
-          <input className="name-input" type="text" onChange={(e) => setName(e.target.value)} />
-          <button className="submit-button" onClick={submitName}>
-            Submit
-          </button>
+        <div className="lobby">
+          <h1 className="lobby-title">Enter your name</h1>
+
+          <div className="input-button-wrapper">
+            <input className="custom-name-input" type="text" onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submitName()} />
+            <button className="submit-button" onClick={submitName}>
+              Submit
+            </button>
+          </div>
         </div>
       ) : (
         <div className="player-info-section">
+          <h1> Waiting for the narrator to start the game...</h1>
           <h2 className="welcome-message">Welcome, {name}!</h2>
           <h3 className="current-players">
             Current Players:{" "}

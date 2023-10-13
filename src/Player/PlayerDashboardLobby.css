@@ -1,14 +1,52 @@
 .lobby-dashboard {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center */
+  justify-content: center; /* Vertically center */
+  height: 100vh; /* Full screen height */
+}
+.lobby {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center */
+  justify-content: center; /* Vertically center */
+  height: 100vh;
+}
+.player-info-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center */
+  justify-content: center; /* Vertically center */
+  width: 100%; /* Take full width to enforce centering */
+  margin-top: 20px;
 }
 
+.game-logo {
+  width: 150px; /* Adjust this value as needed */
+}
 .lobby-title {
   font-size: 2em;
+}
+.input-button-wrapper {
+  display: flex;
+  justify-content: center; /* Center elements in the row */
+  align-items: center; /* Align items vertically */
+}
+.custom-name-input {
+  margin-right: 10px; /* Space between input and button */
+  background-color: #8ec7d2;
+  width: 30%;
+}
+.submit-button {
+  cursor: pointer;
+  padding: 10px 20px; /* Reduce button size */
 }
 
 .name-input-section {
   display: flex;
-  flex-direction: column;
+  align-items: center; /* Align items in the row */
 }
 
 .name-input {

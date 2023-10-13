@@ -7,11 +7,13 @@ interface Role {
 enum RoleDescription {
   VILLAGER = `
   Their objective is to defeat the Werewolves. His word is his only power of persuasion to eliminate them. Stay alert for hints, and identify the culprits.
+  
   In the case of an equality during the daily vote and if no mayor is elected, no player dies.
   The votes of the Villagers can be decisive in the fight against the Werewolves.
 `,
   WEREWOLF = `
   Defeating the villagers is their objective. During that night, the Werewolves join together and vote on who should be eliminated. During the day, they cannot be unmasked.
+  
   The Werewolves are called once per night. They can discuss with other Wolves during their voting phase.
   If the vote leads to a tie, a player dies randomly among those who were targeted in the tie.
   No player will die if the Wolves don't target anyone.

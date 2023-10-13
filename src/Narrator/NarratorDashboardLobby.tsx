@@ -3,7 +3,9 @@ import { io } from "socket.io-client";
 import { Role, RoleAttributes } from "../types/Role";
 import { Player, PlayerType } from "../types/Player";
 import { useNavigate } from "react-router-dom";
+import "../index.css";
 import "./NarratorDashboardLobby.css";
+
 const socket = io("http://localhost:3001");
 
 const NarratorDashboardLobby: React.FC = () => {
@@ -47,6 +49,8 @@ const NarratorDashboardLobby: React.FC = () => {
 
   return (
     <div className="narrator-dashboard">
+      <img src="https://i.ibb.co/SXh3Hpm/Wherere-Wolfs-Logo-removebg-preview-modified.png" alt="Game Logo" className="game-logo" />
+
       {isNameSubmitted ? (
         <div>
           <h1 className="narrator-dashboard h1">Narrator Dashboard</h1>
@@ -82,11 +86,14 @@ const NarratorDashboardLobby: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div>
-          <input className="narrator-dashboard input" type="text" placeholder="Enter your name" onChange={(e) => setNarratorName(e.target.value)} />
-          <button className="narrator-dashboard button" onClick={submitName}>
-            Submit
-          </button>
+        <div className="lobby">
+          <h1 className="lobby-title">Enter your name</h1>
+          <div className="input-button-wrapper">
+            <input className="custom-name-input" type="text" placeholder="Enter your name" onChange={(e) => setNarratorName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submitName()} />
+            <button className="submit-button" onClick={submitName}>
+              Submit
+            </button>
+          </div>
         </div>
       )}
     </div>

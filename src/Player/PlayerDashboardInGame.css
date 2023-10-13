@@ -44,3 +44,33 @@
 .player-info {
   font-size: 1em;
 }
+.player-dashboard-in-game {
+  padding: 20px;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.game-logo {
+  width: 100px; /* You can adjust this */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dashboard-title {
+  font-size: 2em;
+  margin-left: 110px; /* Adjust based on the logo width */
+}
+
+.name-input-container {
+  margin-top: 20px;
+}
+
+.name-input {
+  background-color: #8ec7d2;
+  width: 30%; /* You can adjust this */
+}
