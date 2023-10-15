@@ -120,10 +120,20 @@ const NarratorDashboardLobby: React.FC = () => {
                   <div className="role-button-wrapper">
                     {" "}
                     {/* New wrapper for the buttons */}
-                    <button className="role-button narrator-dashboard button" onClick={() => addRole(role)}>
+                    <button
+                      className="role-button narrator-dashboard button"
+                      onClick={(e) => {
+                        addRole(role);
+                        e.stopPropagation();
+                      }}>
                       +
                     </button>
-                    <button className="role-button narrator-dashboard button" onClick={() => removeRole(role)}>
+                    <button
+                      className="role-button narrator-dashboard button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeRole(role);
+                      }}>
                       -
                     </button>
                   </div>

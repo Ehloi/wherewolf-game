@@ -95,18 +95,17 @@ const PlayerDashboardInGame: React.FC = () => {
 
   return (
     <div className="player-dashboard-in-game">
-      <h1 className="dashboard-title">Player Dashboard</h1>
+      <h1 className="dashboard-title">{playerInfo?.name}'s Dashboard</h1>
       <p className="game-start-message">
-        <strong>The game has started, {playerInfo?.name}</strong>
+        <h4>The game has started</h4>
       </p>
       <button onClick={toggleRoleInfo}>{showRoleInfo ? "Hide My Role" : "Display my role"}</button> {/* New button */}
       {showRoleInfo && (
         <>
+          {" "}
+          <h4>Your role is: {playerInfo?.role?.attributes.name}</h4>{" "}
           <img src={RoleIcon[playerInfo?.role?.attributes.name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${playerInfo?.role?.attributes.name} icon`} className="role-icon" />
-
-          <p className="role-info">
-            <strong>Your role is: </strong> {playerInfo?.role?.attributes.name}
-          </p>
+          <p className="role-info"></p>
           <p className="role-description">{formattedDescription}</p>
         </>
       )}
@@ -126,9 +125,8 @@ const PlayerDashboardInGame: React.FC = () => {
             </div>
           ))}
       </div>
-      <h3 className="roles-title">Roles:</h3>
+      <h3 className="roles-title">Alive roles:</h3>
       <div className="role-list">
-        Remaining characters: <br />
         {aliveRoles
           .filter((role) => role.number > 0)
           .map((role) => (
