@@ -13,8 +13,9 @@
 }
 
 .status-indicator {
-  width: 20px;
-  height: 20px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
 }
 
@@ -39,6 +40,9 @@
 .player-card {
   width: 30%;
   margin: 10px;
+}
+.player-card.active {
+  background-color: #ccc; /* Any highlight color */
 }
 
 .player-info {

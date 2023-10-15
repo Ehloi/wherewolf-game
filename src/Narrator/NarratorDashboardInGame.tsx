@@ -23,8 +23,7 @@ const NarratorDashboardInGame: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [alivePlayers, setAlivePlayers] = useState<Player[]>([]);
   const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: number }[]>([]);
-  const [script, setScript] = useState<string[]>([]);
-
+  const [script, setScript] = useState<React.ReactNode[]>([]);
   const allRoleNames = Object.values(RoleName);
   const navigate = useNavigate();
   useEffect(() => {
@@ -61,7 +60,20 @@ const NarratorDashboardInGame: React.FC = () => {
     socket.emit("switch-is-good", playerId);
   };
   const updateScript = () => {
-    setScript(narratorScript(players));
+    const scripts = narratorScript(players).join("\n"); // Assuming you join all steps into a single string
+    const lines = scripts.split("\n").map((line, index, array) =>
+      index === array.length - 1 ? (
+        <>
+          {index}.{line}
+        </>
+      ) : (
+        <>
+          {index}.{line}
+          <br />
+        </>
+      )
+    );
+    setScript(lines);
   };
 
   return (
@@ -90,7 +102,8 @@ const NarratorDashboardInGame: React.FC = () => {
             <button className="update-script-button" onClick={() => updateScript()}>
               Update Scripts
             </button>
-            {script}
+            <div>{script}</div>
+
             {alivePlayers.filter((player) => player.role?.attributes.isGood).length < alivePlayers.filter((player) => player.role?.attributes.isGood === false).length
               ? "Werewolves win!"
               : alivePlayers.filter((player) => player.role?.attributes.name === RoleName.WEREWOLF).length === 0

@@ -93,7 +93,7 @@ const PlayerDashboardLobby: React.FC = () => {
   };
   return (
     <div className="lobby-dashboard">
-      <img src="https://i.ibb.co/SXh3Hpm/Wherere-Wolfs-Logo-removebg-preview-modified.png" alt="Game Logo" className="game-logo" />
+      {/* <img src="https://i.ibb.co/SXh3Hpm/Wherere-Wolfs-Logo-removebg-preview-modified.png" alt="Game Logo" className="game-logo" /> */}
       {!hasEnteredName ? (
         <div className="lobby">
           <h1 className="lobby-title">Enter your name</h1>
@@ -119,26 +119,30 @@ const PlayerDashboardLobby: React.FC = () => {
           <h3 className="narrator-info">
             {"Narrator: " + `${players.find((player) => player.playerType === "Narrator") ? players.find((player) => player.playerType === "Narrator")?.name : "No narrator yet"}` + "\n"}
           </h3>
-          <div className="role-info">
-            {allRoleNames.map((name) => {
-              const numberOfRoles = roles.filter((role: Role) => role && role.attributes && role.attributes.name === name).length;
-              const isSelected = selectedRole === name;
+          <div className="card-section">
+            {
+              <div className="role-info">
+                {allRoleNames.map((name) => {
+                  const numberOfRoles = roles.filter((role: Role) => role && role.attributes && role.attributes.name === name).length;
+                  const isSelected = selectedRole === name;
 
-              return (
-                <div className={`role-card ${isSelected ? "expanded" : ""}`} onClick={() => toggleRoleDescription(name)}>
-                  <img src={RoleIcon[name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${name} icon`} className="role-icon" />
-                  <h3 className="role-count">
-                    {name}: {numberOfRoles}
-                  </h3>
-                  {isSelected && (
-                    <p
-                      className="role-description"
-                      dangerouslySetInnerHTML={{ __html: RoleDescription[name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleDescription].trim().replaceAll("\n", "<br>") }}
-                    />
-                  )}
-                </div>
-              );
-            })}
+                  return (
+                    <div className={`role-card ${isSelected ? "expanded" : ""}`} onClick={() => toggleRoleDescription(name)}>
+                      <img src={RoleIcon[name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${name} icon`} className="role-icon" />
+                      <h3 className="role-count">
+                        {name}: {numberOfRoles}
+                      </h3>
+                      {isSelected && (
+                        <p
+                          className="role-description"
+                          dangerouslySetInnerHTML={{ __html: RoleDescription[name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleDescription].trim().replaceAll("\n", "<br>") }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            }
           </div>
         </div>
       )}

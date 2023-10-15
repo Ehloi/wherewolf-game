@@ -1,6 +1,7 @@
 .lobby-dashboard {
+  overflow-y: auto;
+  flex-direction: column;
   padding: 20px;
-  display: flex;
   flex-direction: column;
   align-items: center; /* Horizontally center */
   justify-content: center; /* Vertically center */
@@ -24,7 +25,10 @@
 }
 
 .game-logo {
-  width: 150px; /* Adjust this value as needed */
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.8; /* add transparency  */
 }
 .lobby-title {
   font-size: 2em;
@@ -70,4 +74,7 @@
 .narrator-info {
   font-size: 1em;
   margin-bottom: 10px;
+}
+.player-info-narrator-section .card-section {
+  width: 100%;
 }

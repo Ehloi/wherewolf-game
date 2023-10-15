@@ -27,6 +27,7 @@ const PlayerDashboardInGame: React.FC = () => {
   const [aliveRoles, setAliveRoles] = useState<{ name: RoleName | undefined; number: number }[]>([]);
   const allRoleNames = Object.values(RoleName);
   const playerId: string = useLocation().state.playerId;
+  const [showRoleInfo, setShowRoleInfo] = useState(false); // New state for toggle
   const navigate = useNavigate();
   useEffect(() => {
     loadAllInfo();
@@ -75,6 +76,22 @@ const PlayerDashboardInGame: React.FC = () => {
     // Ask for the server to update all info
     socket.emit("update-all");
   };
+  const toggleRoleInfo = () => {
+    setShowRoleInfo(!showRoleInfo);
+  };
+  const formattedDescription = playerInfo?.role?.attributes.description
+    .trim()
+    .split("\n")
+    .map((line, index, array) =>
+      index === array.length - 1 ? (
+        line
+      ) : (
+        <>
+          {line}
+          <br />
+        </>
+      )
+    );
 
   return (
     <div className="player-dashboard-in-game">
@@ -82,17 +99,21 @@ const PlayerDashboardInGame: React.FC = () => {
       <p className="game-start-message">
         <strong>The game has started, {playerInfo?.name}</strong>
       </p>
-      <p className="role-info">
-        <strong>Your role is: </strong> {playerInfo?.role?.attributes.name}
-      </p>
-      <p className="role-description">
-        <strong>Your role description: {playerInfo?.role?.attributes.description}</strong>
-      </p>
-      <p className="status">
-        <strong>Status: </strong> {playerInfo?.isAlive ? "Alive" : "☠️"}
-      </p>
-      <div className={`status-indicator ${playerInfo?.isAlive ? "alive-indicator" : "dead-indicator"}`}></div>
+      <button onClick={toggleRoleInfo}>{showRoleInfo ? "Hide My Role" : "Display my role"}</button> {/* New button */}
+      {showRoleInfo && (
+        <>
+          <img src={RoleIcon[playerInfo?.role?.attributes.name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${playerInfo?.role?.attributes.name} icon`} className="role-icon" />
 
+          <p className="role-info">
+            <strong>Your role is: </strong> {playerInfo?.role?.attributes.name}
+          </p>
+          <p className="role-description">{formattedDescription}</p>
+        </>
+      )}
+      <p className="status">
+        <strong>Status: </strong>
+        <span className={`status-indicator ${playerInfo?.isAlive ? "alive-indicator" : "dead-indicator"}`}></span>
+      </p>
       <h3 className="players-title">Players:</h3>
       <div className="player-list">
         {players
@@ -100,12 +121,11 @@ const PlayerDashboardInGame: React.FC = () => {
           .map((p: Player) => (
             <div className="player-card" key={p.name}>
               <h3 className="player-info">
-                Name: {p.name} - Status: {p.isAlive ? "Alive" : "Dead"}
+                {p.name} <span className={`status-indicator ${playerInfo?.isAlive ? "alive-indicator" : "dead-indicator"}`}></span>
               </h3>
             </div>
           ))}
       </div>
-
       <h3 className="roles-title">Roles:</h3>
       <div className="role-list">
         Remaining characters: <br />

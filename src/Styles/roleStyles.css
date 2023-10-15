@@ -1,8 +1,3 @@
-.role-info {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .role-count {
   width: 100%;
   text-align: center;
@@ -11,12 +6,12 @@
 .role-info {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .role-card {
   flex: 1;
-  min-width: calc(33.333% - 20px); /* 3 cards per line on a phone */
+  min-width: calc(100% - 20px); /* 1 cards per line on a phone */
   margin: 10px;
   padding: 10px; /* Reduced padding */
   border: 10px solid #07485b; /* Reduced border width */
@@ -30,7 +25,17 @@
   background-color: #0d6986;
   cursor: pointer;
 }
-@media (min-width: 768px) {
+@media (min-width: 350px) {
+  .role-card {
+    min-width: calc(50% - 20px); /* 2 cards per line on larger screens */
+  }
+}
+@media (min-width: 500px) {
+  .role-card {
+    min-width: calc(33% - 20px); /* 3 cards per line on larger screens */
+  }
+}
+@media (min-width: 700px) {
   .role-card {
     min-width: calc(25% - 20px); /* 4 cards per line on larger screens */
   }
