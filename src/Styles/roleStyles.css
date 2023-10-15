@@ -12,17 +12,17 @@
 .role-card {
   flex: 1;
   min-width: calc(100% - 20px); /* 1 cards per line on a phone */
-  margin: 10px;
-  padding: 10px; /* Reduced padding */
-  border: 10px solid #07485b; /* Reduced border width */
-  border-radius: 30px;
+  margin: 5px;
+  padding: 5px; /* Reduced padding */
+  border: 5px solid #5c382f; /* Reduced border width */
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.5s ease-in-out;
 }
 .role-card:hover {
-  background-color: #0d6986;
+  background-color: #5c4742;
   cursor: pointer;
 }
 @media (min-width: 350px) {
@@ -59,15 +59,16 @@
   width: 100%;
   height: 100%;
   z-index: 9999;
-  background-color: #0d6986;
+  background-color: #5c382f;
   overflow-y: auto;
 }
 .role-description {
+  color: #2b1412;
   font-size: 16px;
   line-height: 1.5;
   margin: 20px;
   padding: 10px;
-  border: 3px solid #07485b;
+  border: 3px solid #2b1412;
   border-radius: 5px;
-  background-color: purple;
+  background-color: #816f67;
 }

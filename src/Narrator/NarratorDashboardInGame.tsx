@@ -64,11 +64,11 @@ const NarratorDashboardInGame: React.FC = () => {
     const lines = scripts.split("\n").map((line, index, array) =>
       index === array.length - 1 ? (
         <>
-          {index}.{line}
+          {index + 1}.{line}
         </>
       ) : (
         <>
-          {index}.{line}
+          {index + 1}.{line}
           <br />
         </>
       )
@@ -102,7 +102,7 @@ const NarratorDashboardInGame: React.FC = () => {
             <button className="update-script-button" onClick={() => updateScript()}>
               Update Scripts
             </button>
-            <div>{script}</div>
+            <h4>{script}</h4>
 
             {alivePlayers.filter((player) => player.role?.attributes.isGood).length < alivePlayers.filter((player) => player.role?.attributes.isGood === false).length
               ? "Werewolves win!"

@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, purple, black);
+  /* background: linear-gradient(to bottom, purple, black); */
   font-family: "Arial", sans-serif; /* Added this line */
   min-height: 100vh; /* ensures that body takes the whole vertical height */
   width: 100%; /* ensures that body takes the whole width */
@@ -13,7 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: linear-gradient(to bottom, purple, black);
+  /* background-color: linear-gradient(to bottom, purple, black); */
   font-family: "Arial", sans-serif;
   border-radius: 15px;
   padding: 20px;

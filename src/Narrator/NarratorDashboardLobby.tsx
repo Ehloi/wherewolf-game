@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { Role, RoleAttributes } from "../types/Role";
+import { Role, RoleAttributes, RoleDescription, RoleIcon } from "../types/Role";
 import { Player, PlayerType } from "../types/Player";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
@@ -27,6 +27,8 @@ const NarratorDashboardLobby: React.FC = () => {
   const [roles, setRoles] = useState<Role[]>([]);
   const allRoleAttributes: RoleAttributes[] = Object.values(RoleAttributes);
   const [players, setPlayers] = useState<Player[]>([]);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+
   useEffect(() => {
     socket.on("update-players", (updatedPlayers: Player[]) => {
       setPlayers(updatedPlayers);
@@ -43,7 +45,13 @@ const NarratorDashboardLobby: React.FC = () => {
       socket.off("reset-game");
     };
   }, []);
-
+  const toggleRoleDescription = (roleName: string) => {
+    if (selectedRole === roleName) {
+      setSelectedRole(null);
+    } else {
+      setSelectedRole(roleName);
+    }
+  };
   const submitName = () => {
     setIsNameSubmitted(true);
     const newPlayer: Player = {
@@ -80,6 +88,8 @@ const NarratorDashboardLobby: React.FC = () => {
           <h3 className="narrator-info">
             {"Narrator: " + `${players.find((player) => player.playerType === "Narrator") ? players.find((player) => player.playerType === "Narrator")?.name : "No narrator yet"}` + "\n"}
           </h3>
+          <h4>You are registered as: {narratorName}</h4>
+
           {
             <div>
               <button
@@ -96,32 +106,43 @@ const NarratorDashboardLobby: React.FC = () => {
               </button>
             </div>
           }
-          <p>You are registered as {narratorName}</p>
           <div className="role-info">
-            {allRoleAttributes.map((role) => (
-              <div className="role-card" key={role.name}>
-                <h3>
-                  {role.name}: {roles.filter((r) => r && r.attributes && r.attributes.name === role.name).length}
-                </h3>
-                <div className="role-button-wrapper">
-                  {" "}
-                  {/* New wrapper for the buttons */}
-                  <button className="role-button narrator-dashboard button" onClick={() => addRole(role)}>
-                    +
-                  </button>
-                  <button className="role-button narrator-dashboard button" onClick={() => removeRole(role)}>
-                    -
-                  </button>
+            {allRoleAttributes.map((role) => {
+              const isSelected = selectedRole === role.name; // Keep track of selected role
+
+              return (
+                <div className={`role-card ${isSelected ? "expanded" : ""}`} key={role.name} onClick={() => toggleRoleDescription(role.name)}>
+                  <img src={RoleIcon[role.name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${role.name} icon`} className="role-icon" />
+
+                  <h3>
+                    {role.name}: {roles.filter((r) => r && r.attributes && r.attributes.name === role.name).length}
+                  </h3>
+                  <div className="role-button-wrapper">
+                    {" "}
+                    {/* New wrapper for the buttons */}
+                    <button className="role-button narrator-dashboard button" onClick={() => addRole(role)}>
+                      +
+                    </button>
+                    <button className="role-button narrator-dashboard button" onClick={() => removeRole(role)}>
+                      -
+                    </button>
+                  </div>
+                  {isSelected && (
+                    <p
+                      className="role-description"
+                      dangerouslySetInnerHTML={{ __html: RoleDescription[role.name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleDescription].trim().replaceAll("\n", "<br>") }}
+                    />
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ) : (
         <div className="lobby">
           <h1 className="lobby-title">Enter your name</h1>
           <div className="input-button-wrapper">
-            <input className="custom-name-input" type="text" placeholder="Enter your name" onChange={(e) => setNarratorName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submitName()} />
+            <input className="custom-name-input" type="text" onChange={(e) => setNarratorName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submitName()} />
             <button className="submit-button" onClick={submitName}>
               Submit
             </button>

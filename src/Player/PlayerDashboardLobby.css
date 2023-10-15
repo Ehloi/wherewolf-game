@@ -40,7 +40,8 @@
 }
 .custom-name-input {
   margin-right: 10px; /* Space between input and button */
-  background-color: #8ec7d2;
+  font-family: "IM Fell English SC", serif;
+  background-color: #5c4742;
   width: 30%;
 }
 .submit-button {

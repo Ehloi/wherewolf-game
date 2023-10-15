@@ -26,12 +26,12 @@
 
 .role-button {
   font-size: 24px; /* Increased font size */
-  padding: 10px 20px; /* Increased padding */
-  margin: 5px; /* Space between buttons */
+  padding: 0px 10px; /* Increased padding */
+  margin: 2px; /* Space between buttons */
 }
 .custom-name-input {
   margin-right: 10px; /* Space between input and button */
-  background-color: #8ec7d2;
+  background-color: #5c4742;
   width: 30%;
 }
 
