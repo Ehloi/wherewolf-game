@@ -26,7 +26,11 @@ const NarratorDashboardLobby: React.FC = () => {
   const [isNameSubmitted, setIsNameSubmitted] = useState<boolean>(false);
   const [roles, setRoles] = useState<Role[]>([]);
   const allRoleAttributes: RoleAttributes[] = Object.values(RoleAttributes);
+  const [players, setPlayers] = useState<Player[]>([]);
   useEffect(() => {
+    socket.on("update-players", (updatedPlayers: Player[]) => {
+      setPlayers(updatedPlayers);
+    });
     socket.on("update-roles", (newRoles: Role[]) => {
       setRoles(newRoles);
     });
@@ -34,6 +38,7 @@ const NarratorDashboardLobby: React.FC = () => {
       navigate("/");
     });
     return () => {
+      socket.off("update-players");
       socket.off("update-roles");
       socket.off("reset-game");
     };
@@ -65,6 +70,16 @@ const NarratorDashboardLobby: React.FC = () => {
       {isNameSubmitted ? (
         <div className="centered-content">
           <h1>Narrator Dashboard</h1>
+          <h3 className="current-players">
+            Current Players:{" "}
+            {players
+              .filter((player) => player.playerType === "Player")
+              .map((player) => player.name)
+              .join(", ")}
+          </h3>
+          <h3 className="narrator-info">
+            {"Narrator: " + `${players.find((player) => player.playerType === "Narrator") ? players.find((player) => player.playerType === "Narrator")?.name : "No narrator yet"}` + "\n"}
+          </h3>
           {
             <div>
               <button

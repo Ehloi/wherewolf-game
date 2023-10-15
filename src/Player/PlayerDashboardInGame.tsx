@@ -121,7 +121,7 @@ const PlayerDashboardInGame: React.FC = () => {
           .map((p: Player) => (
             <div className="player-card" key={p.name}>
               <h3 className="player-info">
-                {p.name} <span className={`status-indicator ${playerInfo?.isAlive ? "alive-indicator" : "dead-indicator"}`}></span>
+                {p.name} <span className={`status-indicator ${p.isAlive ? "alive-indicator" : "dead-indicator"}`}></span>
               </h3>
             </div>
           ))}
