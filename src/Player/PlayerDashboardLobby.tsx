@@ -30,6 +30,7 @@ const PlayerDashboardLobby: React.FC = () => {
   const playerId: string = socket.id;
 
   useEffect(() => {
+    console.log("Socket url:", socketUrl);
     socket.on("update-players", (updatedPlayers: Player[]) => {
       setPlayers(updatedPlayers);
       if (!updatedPlayers.find((player) => player.id === playerId)) {
