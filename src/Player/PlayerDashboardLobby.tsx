@@ -5,7 +5,19 @@ import { Role, RoleName, RoleIcon, RoleDescription } from "../types/Role";
 import { useNavigate } from "react-router-dom";
 import "./PlayerDashboardLobby.css"; // Import the CSS file
 import "../Styles/roleStyles.css"; // Import the CSS file
-const socket = io("http://localhost:3001");
+let port;
+let socketUrl: string = "";
+
+if (process.env.NODE_ENV === "development") {
+  port = process.env.REACT_APP_PORT || 3001;
+  socketUrl = `${process.env.REACT_APP_SOCKET_LINK}:${port}`;
+}
+if (process.env.NODE_ENV === "production") {
+  socketUrl = process.env.REACT_APP_SOCKET_LINK!;
+}
+
+const socket = io(socketUrl);
+
 const PlayerDashboardLobby: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -16,6 +28,7 @@ const PlayerDashboardLobby: React.FC = () => {
   const allRoleNames = Object.values(RoleName);
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const playerId: string = socket.id;
+
   useEffect(() => {
     socket.on("update-players", (updatedPlayers: Player[]) => {
       setPlayers(updatedPlayers);

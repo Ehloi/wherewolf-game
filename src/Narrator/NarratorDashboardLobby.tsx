@@ -6,7 +6,18 @@ import { useNavigate } from "react-router-dom";
 import "../index.css";
 import "./NarratorDashboardLobby.css";
 
-const socket = io("http://localhost:3001");
+let port;
+let socketUrl: string = "";
+
+if (process.env.NODE_ENV === "development") {
+  port = process.env.REACT_APP_PORT || 3001;
+  socketUrl = `${process.env.REACT_APP_SOCKET_LINK}:${port}`;
+}
+if (process.env.NODE_ENV === "production") {
+  socketUrl = process.env.REACT_APP_SOCKET_LINK!;
+}
+
+const socket = io(socketUrl);
 
 const NarratorDashboardLobby: React.FC = () => {
   const navigate = useNavigate();
@@ -52,8 +63,8 @@ const NarratorDashboardLobby: React.FC = () => {
       <img src="https://i.ibb.co/SXh3Hpm/Wherere-Wolfs-Logo-removebg-preview-modified.png" alt="Game Logo" className="game-logo" />
 
       {isNameSubmitted ? (
-        <div>
-          <h1 className="narrator-dashboard h1">Narrator Dashboard</h1>
+        <div className="centered-content">
+          <h1>Narrator Dashboard</h1>
           {
             <div>
               <button
@@ -71,19 +82,25 @@ const NarratorDashboardLobby: React.FC = () => {
             </div>
           }
           <p>You are registered as {narratorName}</p>
-          {allRoleAttributes.map((role) => (
-            <div key={role.name}>
-              <h3 className="narrator-dashboard h3">
-                {role.name}: {roles.filter((r) => r && r.attributes && r.attributes.name === role.name).length}
-              </h3>
-              <button className="narrator-dashboard button" onClick={() => addRole(role)}>
-                +
-              </button>
-              <button className="narrator-dashboard button" onClick={() => removeRole(role)}>
-                -
-              </button>
-            </div>
-          ))}
+          <div className="role-info">
+            {allRoleAttributes.map((role) => (
+              <div className="role-card" key={role.name}>
+                <h3>
+                  {role.name}: {roles.filter((r) => r && r.attributes && r.attributes.name === role.name).length}
+                </h3>
+                <div className="role-button-wrapper">
+                  {" "}
+                  {/* New wrapper for the buttons */}
+                  <button className="role-button narrator-dashboard button" onClick={() => addRole(role)}>
+                    +
+                  </button>
+                  <button className="role-button narrator-dashboard button" onClick={() => removeRole(role)}>
+                    -
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <div className="lobby">

@@ -6,7 +6,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./PlayerDashboardInGame.css"; // Import the CSS file
 import "../Styles/roleStyles.css";
 
-const socket = io("http://localhost:3001");
+let port;
+let socketUrl: string = "";
+
+if (process.env.NODE_ENV === "development") {
+  port = process.env.REACT_APP_PORT || 3001;
+  socketUrl = `${process.env.REACT_APP_SOCKET_LINK}:${port}`;
+}
+if (process.env.NODE_ENV === "production") {
+  socketUrl = process.env.REACT_APP_SOCKET_LINK!;
+}
+
+const socket = io(socketUrl);
 
 const PlayerDashboardInGame: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);

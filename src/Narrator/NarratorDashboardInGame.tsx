@@ -5,8 +5,18 @@ import { Player, PlayerType } from "../types/Player";
 import { useNavigate } from "react-router-dom";
 import { narratorScript } from "./script";
 import "./NarratorDashboardInGame.css"; // Import the CSS
+let port;
+let socketUrl: string = "";
 
-const socket = io("http://localhost:3001");
+if (process.env.NODE_ENV === "development") {
+  port = process.env.REACT_APP_PORT || 3001;
+  socketUrl = `${process.env.REACT_APP_SOCKET_LINK}:${port}`;
+}
+if (process.env.NODE_ENV === "production") {
+  socketUrl = process.env.REACT_APP_SOCKET_LINK!;
+}
+
+const socket = io(socketUrl);
 
 const NarratorDashboardInGame: React.FC = () => {
   const [players, setPlayers] = useState<Player[]>([]);
