@@ -93,7 +93,7 @@ const NarratorDashboardLobby: React.FC = () => {
           {
             <div>
               <button
-                className="narrator-dashboard button"
+                className="narrator-dashboard-button"
                 onClick={() => {
                   socket.emit("start-game");
                   // redirects to NarratorDashboardInGame
@@ -101,7 +101,7 @@ const NarratorDashboardLobby: React.FC = () => {
                 }}>
                 Start Game
               </button>
-              <button className="narrator-dashboard button" onClick={() => socket.emit("reset-game")}>
+              <button className="narrator-dashboard-button" onClick={() => socket.emit("reset-game")}>
                 Reset Game
               </button>
             </div>
@@ -114,9 +114,9 @@ const NarratorDashboardLobby: React.FC = () => {
                 <div className={`role-card ${isSelected ? "expanded" : ""}`} key={role.name} onClick={() => toggleRoleDescription(role.name)}>
                   <img src={RoleIcon[role.name.replaceAll(" ", "_").toUpperCase() as keyof typeof RoleIcon]} alt={`${role.name} icon`} className="role-icon" />
 
-                  <h3>
+                  <h6 className="role-name">
                     {role.name}: {roles.filter((r) => r && r.attributes && r.attributes.name === role.name).length}
-                  </h3>
+                  </h6>
                   <div className="role-button-wrapper">
                     {" "}
                     {/* New wrapper for the buttons */}

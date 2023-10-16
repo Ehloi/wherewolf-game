@@ -2,8 +2,6 @@ interface Role {
   attributes: RoleAttributes;
   assigned: boolean;
 }
-// const CommonRoles = ["WEREWOLF", "TALKATIVE_WOLF", "BLACK_WOLF", "SEER", "DRUNK_VILLAGER", "WITCH", "LITTLE_GIRL", "HUNTER", "THE_RED_RIDING_HOOD", "GUARD", "CUPID", "DICTATOR"] as const;
-// type CommonRole = typeof CommonRoles[number];
 enum RoleDescription {
   VILLAGER = `Aims to defeat Werewolves through voting. Has no special abilities.`,
 
@@ -17,7 +15,7 @@ enum RoleDescription {
 
   DRUNK_VILLAGER = `A Villager who can't speak and communicates only through gestures. If he speaks, he dies.`,
 
-  WITCH = `Can either save a Werewolf's victim or kill a player at night. Has limited potions.`,
+  WITCH = `Can either save a Werewolf's victim or kill a player at night. Has 1 kill and 1 save potion. Can't use both in 1 round.`,
 
   LITTLE_GIRL = `Can spy on Werewolves at night, but risks getting caught.`,
 
@@ -63,6 +61,7 @@ enum RoleIcon {
   CUPID = "https://i.ibb.co/98jSWH0/cupidonwolfy-hg78vy.png",
   DICTATOR = "https://i.ibb.co/rw0C5nP/dictateurwolfy-y2x954.png",
 }
+
 class RoleAttributes {
   private constructor(public readonly name: RoleName, public readonly description: RoleDescription, public isGood: boolean, public readonly isUnique: boolean, public readonly iconUrl: RoleIcon) {}
 

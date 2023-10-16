@@ -25,9 +25,14 @@
 }
 
 .role-button {
-  font-size: 24px; /* Increased font size */
-  padding: 0px 10px; /* Increased padding */
-  margin: 2px; /* Space between buttons */
+  font-size: 18px; /* Increased font size */
+  padding: 0px 9px; /* Increased padding */
+  margin: 2px 8px; /* Space between buttons */
+}
+.narrator-dashboard-button {
+  font-size: 18px; /* Increased font size */
+  padding: 0px 5px; /* Increased padding */
+  margin: 5px 5px; /* Space between buttons */
 }
 .custom-name-input {
   margin-right: 10px; /* Space between input and button */
@@ -38,4 +43,10 @@
 .submit-button {
   cursor: pointer;
   padding: 10px 20px; /* Reduce button size */
+}
+.role-name {
+  font-family: "IM Fell English SC", serif;
+  text-align: center;
+  /* font-family: "Cinzel", serif; */
+  color: #a5978b;
 }
